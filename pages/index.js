@@ -5,20 +5,28 @@ import styles from '../styles/Home.module.css';
 
 export default function Home() {
 	let [src, setSrc] = useState('/dallimage.jpeg');
-
+	let [btnDis, setBtnDis] = useState(false);
+	let [imgDescription, setImgDescription] = useState(
+		'Dog standing in a feild hand paint'
+	);
 	function generateImg() {
 		const windowUrl = window.location.search;
 		const params = new URLSearchParams(windowUrl);
 		let userId = params.get('user');
 		let description = document.getElementById('description').value;
 
-		console.time();
 		if (description !== '') {
+			setBtnDis(true);
 			fetch(`/api/hello?q=${description}&user=${userId}`)
 				.then((res) => res.json())
 				.then((data) => {
-					console.timeLog();
-					setSrc(data.imgUrl);
+					setBtnDis(false);
+					if (data.status === 200) {
+						setImgDescription(description);
+						setSrc(data.imgUrl);
+					} else {
+						alert(data.msg);
+					}
 				});
 		}
 	}
@@ -45,22 +53,22 @@ export default function Home() {
 					type={'text'}
 					placeholder="Enter Image description"
 				/>
-				<button className={styles.button} onClick={generateImg}>
+				<button
+					className={styles.button}
+					onClick={generateImg}
+					disabled={btnDis}>
 					Generate
 				</button>
 				<div className={styles.grid}>
 					<img src={src} className={[styles.img, styles.card].join(' ')} />
 					<div className={styles.card}>
-						<h2> Dog standing in a feild pixeled image</h2>
+						<h2> {imgDescription}</h2>
 					</div>
 				</div>
 			</main>
 
 			<footer className={styles.footer}>
-				<a
-					href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer">
+				<a href="https://openai.com" target="_blank" rel="noopener noreferrer">
 					Powered by{' '}
 					<span className={styles.logo}>
 						<Image
