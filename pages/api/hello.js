@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
 	useUnifiedTopology: true,
 	serverApi: ServerApiVersion.v1,
 });
-client.connect();
+client.connect((err) => console.log(err));
 
 export default async function handler(req, res) {
 	console.log();
