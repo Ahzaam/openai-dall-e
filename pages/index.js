@@ -57,7 +57,7 @@ export default function Home() {
 					className={styles.button}
 					onClick={generateImg}
 					disabled={btnDis}>
-					Generate
+					{btnDis ? 'Generating' : 'Generate'}
 				</button>
 				<div className={styles.grid}>
 					<img src={src} className={[styles.img, styles.card].join(' ')} />
